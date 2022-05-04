@@ -33,6 +33,7 @@ addButton.addEventListener("click", async () => {
     deleteButton.addEventListener("click", async () => {
       try {
         await apiClient.deleteTodo(createdTodo.id);
+        divText.onclick = null;
         todo.remove();
       } catch (error) {}
     });
@@ -44,7 +45,7 @@ addButton.addEventListener("click", async () => {
       } catch (error) {}
     });
 
-    divText.addEventListener("click", () => {
+    divText.onclick = () => {
       const changeInput = document.createElement("input");
       changeInput.value = divText.innerText;
       todo.replaceChild(changeInput, divText);
@@ -60,6 +61,6 @@ addButton.addEventListener("click", async () => {
           } catch (error) {}
         }
       });
-    });
+    };
   } catch (error) {}
 });
