@@ -10,7 +10,7 @@ inputbox.addEventListener("keydown", (event) => {
 });
 
 addButton.addEventListener("click", async () => {
-  await postTodo(inputbox.value);
+  const response = await postTodo(inputbox.value);
   const { todo, deleteButton, divText, completeButton } = TodoFunc(
     inputbox.value
   );

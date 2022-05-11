@@ -14,7 +14,7 @@ export async function postTodo(text) {
   return await result.json();
 }
 
-export async function patch(id, text, completed) {
+export async function patchTodo(id, text, completed) {
   const result = await fetch("http://localhost:4000/todos/" + id, {
     headers: { "Content-Type": "application/json" },
     method: "PATCH",
