@@ -1,5 +1,6 @@
 import { TodoForm } from "./TodoForm.js";
 import { TodoList } from "./TodoList.js";
+import { TodoProgress } from "./TodoProgress.js";
 
 let state = [
   {
@@ -22,6 +23,12 @@ let state = [
   },
 ];
 
+function calculate(state) {
+  const total = state.length;
+  const completed = state.filter((com) => com.completed === true).length;
+  return { total, completed };
+}
+
 function setState(newState) {
   document.body.replaceChildren();
   document.body.append(...MakeApp(newState));
@@ -33,7 +40,7 @@ function handleAddClick(value) {
     text: value,
     completed: false,
     isUpdating: false,
-  }); // 수정
+  });
   setState(state);
 }
 
@@ -63,14 +70,29 @@ function handleChangeClick(id) {
   setState(state);
 }
 
+function handleInputChange(e, id) {
+  if (e.key === "Enter") {
+    state = state.map((todo) =>
+      todo.id === id ? { ...todo, isUpdating: false } : todo
+    );
+    setState(state);
+    return;
+  }
+  state = state.map((todo) =>
+    todo.id === id ? { ...todo, text: e.target.value } : todo
+  );
+}
+
 function MakeApp(state) {
   return [
     TodoForm({ onAddClick: handleAddClick }),
+    TodoProgress(calculate(state)),
     TodoList({
       todos: state,
       onDeleteClick: handleDeleteClick,
       onCompleteClick: handleCompleteClick,
       onChangeClick: handleChangeClick,
+      onInputChange: handleInputChange,
     }),
   ];
 }

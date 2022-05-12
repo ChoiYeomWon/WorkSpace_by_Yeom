@@ -10,11 +10,12 @@ export function Todo({
   onDeleteClick,
   onCompleteClick,
   onChangeClick,
+  onInputChange,
 }) {
   const todo = document.createElement("li");
   todo.append(
     isUpdating === true
-      ? Input(text)
+      ? Input({ value: text, onChange: (e) => onInputChange(e, id) })
       : Text({ text, completed, onClick: () => onChangeClick(id) }),
     Button("삭제", () => onDeleteClick(id)),
     Button("완료 후 체크", () => onCompleteClick(id))

@@ -5,6 +5,7 @@ export function TodoList({
   onDeleteClick,
   onCompleteClick,
   onChangeClick,
+  onInputChange,
 }) {
   const element = document.createElement("ul");
   const todolist = todos.map(({ id, text, completed, isUpdating }) => {
@@ -16,6 +17,7 @@ export function TodoList({
       onDeleteClick,
       onCompleteClick,
       onChangeClick,
+      onInputChange,
     });
   });
   element.append(...todolist);
