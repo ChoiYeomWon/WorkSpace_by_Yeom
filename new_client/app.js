@@ -30,8 +30,8 @@ function calculate(state) {
 }
 
 function setState(newState) {
-  document.body.replaceChildren();
-  document.body.append(...MakeApp(newState));
+  document.body.replaceChildren(...MakeApp(newState));
+  document.getElementById("#input").focus();
 }
 
 function handleAddClick(value) {
@@ -73,19 +73,34 @@ function handleChangeClick(id) {
 function handleInputChange(e, id) {
   if (e.key === "Enter") {
     state = state.map((todo) =>
-      todo.id === id ? { ...todo, isUpdating: false } : todo
+      todo.id === id
+        ? { ...todo, text: e.target.value, isUpdating: false }
+        : todo
     );
     setState(state);
     return;
   }
-  state = state.map((todo) =>
-    todo.id === id ? { ...todo, text: e.target.value } : todo
-  );
+}
+
+function handleAddFormChange(e) {
+  const value = e.target.value;
+  if (e.key === "Enter") {
+    state = state.concat({
+      id: Math.random(),
+      text: value,
+      completed: false,
+      isUpdating: false,
+    });
+    setState(state);
+  }
 }
 
 function MakeApp(state) {
   return [
-    TodoForm({ onAddClick: handleAddClick }),
+    TodoForm({
+      onAddClick: handleAddClick,
+      onAddFormChange: handleAddFormChange,
+    }),
     TodoProgress(calculate(state)),
     TodoList({
       todos: state,
