@@ -2,26 +2,7 @@ import { TodoForm } from "./TodoForm.js";
 import { TodoList } from "./TodoList.js";
 import { TodoProgress } from "./TodoProgress.js";
 
-let state = [
-  {
-    id: 1,
-    text: "1번",
-    completed: false,
-    isUpdating: false,
-  },
-  {
-    id: 2,
-    text: "2번",
-    completed: true,
-    isUpdating: false,
-  },
-  {
-    id: 3,
-    text: "3번",
-    completed: false,
-    isUpdating: false,
-  },
-];
+let state = [];
 
 function calculate(state) {
   const total = state.length;
@@ -31,12 +12,11 @@ function calculate(state) {
 
 function setState(newState) {
   document.body.replaceChildren(...MakeApp(newState));
-  document.getElementById("#input").focus();
 }
 
 function handleAddClick(value) {
   state = state.concat({
-    id: Math.random(),
+    id: 
     text: value,
     completed: false,
     isUpdating: false,

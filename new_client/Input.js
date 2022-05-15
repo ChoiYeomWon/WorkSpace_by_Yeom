@@ -1,6 +1,6 @@
-export function Input({ value, id, onChange, onClick }) {
+export function Input({ value, onChange, onClick }) {
   const element = document.createElement("input");
-  element.id = id;
+  element.autofocus = true;
   element.addEventListener("keyup", onChange);
   element.addEventListener("click", onClick);
   element.value = value ? value : "";
