@@ -18,12 +18,12 @@ export function Todo({
     isUpdating === true
       ? Input({
           value: text,
-          onChange: (e) => onInputChange(e, id),
+          onChange: (e) => onInputChange(e, id, completed),
           isFocused: isUpdating,
         })
       : Text({ text, completed, onClick: () => onChangeClick(id) }),
     Button("삭제", () => onDeleteClick(id)),
-    Button("완료 후 체크", () => onCompleteClick(id))
+    Button("완료 후 체크", () => onCompleteClick(id, text))
   );
   return todo;
 }

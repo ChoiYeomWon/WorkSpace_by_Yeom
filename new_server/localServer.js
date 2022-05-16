@@ -13,17 +13,17 @@ app.get("/todos", (req, res) => {
 
 app.post("/todos", (req, res) => {
   if (!validateData(req)) return res.status(400).send();
-  const returnTodo = makeTodo(req.body); // 클라이언트에서 생성 시 id 값 제외
+  const returnTodo = makeTodo(req.body);
   res.send(returnTodo);
 });
 
 app.put("/todos/:id", (req, res) => {
   if (!validateData(req)) return res.status(400).send();
-  const id = parseInt(req.params.id); //id 가져오기, id 값 정수 변환
+  const id = parseInt(req.params.id);
   const returnTodo = putTodo({
     id,
     text: req.body.text,
-    completed: req.body.completed, // 클라이언트에서 수정 시 completed 추가하기
+    completed: req.body.completed,
   });
   res.send(returnTodo);
 });
@@ -32,7 +32,7 @@ app.delete("/todos/:id", (req, res) => {
   const id = parseInt(req.params.id);
   deleteTodo(id);
   res.send("ok!");
-}); // 삭제 시 클라이언트 서버 각각 서로 삭제하면 끝.
+});
 
 function validateData(data) {
   if (

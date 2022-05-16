@@ -1,3 +1,4 @@
+import { deleteTodo, getTodos, postTodo, putTodo } from "./RequestToServer.js";
 import { TodoForm } from "./TodoForm.js";
 import { TodoList } from "./TodoList.js";
 import { TodoProgress } from "./TodoProgress.js";
@@ -14,28 +15,25 @@ function setState(newState) {
   document.body.replaceChildren(...MakeApp(newState));
 }
 
-function handleAddClick(value) {
-  state = state.concat({
-    id: 
-    text: value,
-    completed: false,
-    isUpdating: false,
-  });
+async function handleAddClick(value) {
+  state = state.concat(await postTodo(value));
   setState(state);
 }
 
-function handleDeleteClick(id) {
-  state = state.filter((hangman) => hangman.id !== id);
-  setState(state);
+async function handleDeleteClick(id) {
+  if ((await deleteTodo(id)) === true) {
+    state = state.filter((hangman) => hangman.id !== id);
+    setState(state);
+  }
 }
 
-function handleCompleteClick(id) {
+async function handleCompleteClick(id, text) {
+  const returnPut = await putTodo({ id, text, completed: true });
+  if (!returnPut) return;
   state = state.map((transition) =>
     transition.id === id
       ? {
-          id: transition.id,
-          text: transition.text,
-          completed: true,
+          ...returnPut,
           isUpdating: transition.isUpdating,
         }
       : transition
@@ -50,27 +48,21 @@ function handleChangeClick(id) {
   setState(state);
 }
 
-function handleInputChange(e, id) {
+async function handleInputChange(e, id, completed) {
   if (e.key === "Enter") {
+    const returnPut = await putTodo({ id, text: e.target.value, completed });
     state = state.map((todo) =>
-      todo.id === id
-        ? { ...todo, text: e.target.value, isUpdating: false }
-        : todo
+      todo.id === id ? { ...returnPut, isUpdating: false } : todo
     );
     setState(state);
     return;
   }
 }
 
-function handleAddFormChange(e) {
+async function handleAddFormChange(e) {
   const value = e.target.value;
   if (e.key === "Enter") {
-    state = state.concat({
-      id: Math.random(),
-      text: value,
-      completed: false,
-      isUpdating: false,
-    });
+    state = state.concat(await postTodo(value));
     setState(state);
   }
 }
@@ -92,5 +84,5 @@ function MakeApp(state) {
   ];
 }
 
-//나중에 이거 삭제
+state = await getTodos();
 document.body.append(...MakeApp(state));

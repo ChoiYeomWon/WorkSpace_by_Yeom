@@ -4,14 +4,6 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 app.use(express.json());
-let cur = 1;
-let todos = [
-  {
-    id: 0,
-    text: "default todo",
-    completed: false,
-  },
-];
 
 app.get("/todos", (req, res) => {
   res.send(todos);
